@@ -36,14 +36,14 @@ namespace MiniNet.OAuthAPI
         /// </summary>
         /// <param name="callBackUrl"></param>
         /// <returns></returns>
-        string getAuthorize(string callBackUrl);
+        string GetAuthorize(string callBackUrl);
 
         /// <summary>
         /// 用授权的Request Token换取Access Token
         /// </summary>
         /// <param name="verifier"></param>
         /// <returns></returns>
-        bool getAccessToken(string verifier);
+        bool GetAccessToken(string verifier);
 
         /// <summary>
         /// 接口调用方法

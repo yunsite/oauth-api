@@ -36,7 +36,7 @@ namespace Oauth4Web
 
                     OAuthAPI oauthAPI = Session["oauthAPI"] as OAuthAPI;
 
-                    if (oauthAPI.getAccessToken(verifier))
+                    if (oauthAPI.GetAccessToken(verifier))
                     {
                         txtToken.Text = oauthAPI.Token;
                         txtTokenSecret.Text = oauthAPI.TokenSecret;
@@ -72,7 +72,7 @@ namespace Oauth4Web
 
             if (oauthAPI.GetRequestToken(oauthAPIEntity.AppKey, oauthAPIEntity.AppSecret, "http://localhost:3668/default.aspx"))
             {
-                var authorizationUrl = oauthAPI.getAuthorize("http://localhost:3668/default.aspx");
+                var authorizationUrl = oauthAPI.GetAuthorize("http://localhost:3668/default.aspx");
 
                 Session["oauthAPI"] = oauthAPI;
 

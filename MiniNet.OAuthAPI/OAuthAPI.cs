@@ -132,7 +132,7 @@ namespace MiniNet.OAuthAPI
             return true;
         }
 
-        public string getAuthorize(string callBackUrl)
+        public string GetAuthorize(string callBackUrl)
         {
             oauthBase.CallbackUrl = callBackUrl;
 
@@ -165,7 +165,7 @@ namespace MiniNet.OAuthAPI
             return outUrl;
         }
 
-        public bool getAccessToken(string verifier)
+        public bool GetAccessToken(string verifier)
         {
             oauthBase.Verifier = verifier;
 
