@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MiniNet.Net
 {
-    enum HttpMethod
+    public enum HttpMethod
     {
         GET,
         POST

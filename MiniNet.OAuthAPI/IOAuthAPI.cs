@@ -8,8 +8,7 @@ namespace MiniNet.OAuthAPI
     public enum HttpMethod
     {
         GET,
-        POST,
-        Upload
+        POST
     } ;
      
     public interface IOAuthAPI
@@ -48,10 +47,21 @@ namespace MiniNet.OAuthAPI
         /// <summary>
         /// 接口调用方法
         /// </summary>
-        /// <param name="method">GET,POST,Upload</param>
+        /// <param name="method">GET,POST</param>
         /// <param name="api">api接口地址</param>
         /// <param name="parameter">api接口需要的参数</param>
         /// <returns></returns>
         string Call(HttpMethod method, string api, string parameter);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="api"></param>
+        /// <param name="parameter"></param>
+        /// <param name="filename"></param>
+        /// <param name="mimeTypes"></param>
+        /// <param name="bytes"></param>
+        /// <returns></returns>
+        string Call(string api, string parameter, string filename, byte[] bytes);
     }
 }

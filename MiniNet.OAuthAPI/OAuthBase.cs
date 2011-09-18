@@ -326,7 +326,6 @@ namespace MiniNet.OAuthAPI
             normalizedRequestParameters = null;
 
             List<QueryParameter> parameters = GetQueryParameters(url.Query);
-            //List<QueryParameter> parameters = new List<QueryParameter>();
 
             parameters.Add(new QueryParameter(OAuthVersionKey, OAuthVersion));
             parameters.Add(new QueryParameter(OAuthNonceKey, nonce));
@@ -344,8 +343,9 @@ namespace MiniNet.OAuthAPI
                 parameters.Add(new QueryParameter(oAauthVerifier, _verifier));
             }
 
-            if (!string.IsNullOrEmpty(_callbackUrl))
+            if (!string.IsNullOrEmpty(_callbackUrl) && httpMethod == "GET")
             {
+                //需要编码
                 parameters.Add(new QueryParameter(OAuthCallbackKey, _callbackUrl));
             }
 
@@ -358,6 +358,7 @@ namespace MiniNet.OAuthAPI
             }
             normalizedUrl += url.AbsolutePath;
 
+            //编码之后中文话题检索有问题。改成只对callback编码
             //腾讯的在组合参数前需要编码一次。
             parameters = EncodeParameters(parameters);
 

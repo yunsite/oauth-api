@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniNet.Net", "MiniNet.Net\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniNet.OAuthAPI", "MiniNet.OAuthAPI\MiniNet.OAuthAPI.csproj", "{19857163-5712-4E16-BA0B-CD2EBC72EB1D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUnitTest", "NUnitTest\NUnitTest.csproj", "{EDED26EA-DB0D-4C5D-BF95-037D3C87324A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{19857163-5712-4E16-BA0B-CD2EBC72EB1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19857163-5712-4E16-BA0B-CD2EBC72EB1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19857163-5712-4E16-BA0B-CD2EBC72EB1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDED26EA-DB0D-4C5D-BF95-037D3C87324A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDED26EA-DB0D-4C5D-BF95-037D3C87324A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDED26EA-DB0D-4C5D-BF95-037D3C87324A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDED26EA-DB0D-4C5D-BF95-037D3C87324A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

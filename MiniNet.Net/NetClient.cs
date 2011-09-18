@@ -85,16 +85,17 @@ namespace MiniNet.Net
 
         public string Post(Uri uri, string postData, string referer, int timeOut)
         {
-            HttpWebRequest request = null;
+            var request = GetRequest(HttpMethod.POST, uri, referer, timeOut);
+            return Post(request, postData);
+        }
+
+        public string Post(HttpWebRequest request, byte[] bytes)
+        {
             HttpWebResponse response = null;
 
             try
             {
                 string content = null;
-
-                request = GetRequest(HttpMethod.POST, uri, referer, timeOut);
-
-                var bytes = encode.GetBytes(postData);
 
                 Stream requestStream = request.GetRequestStream();
 
@@ -137,6 +138,13 @@ namespace MiniNet.Net
             }
         }
 
+        public string Post(HttpWebRequest request, string postData)
+        {
+            var bytes = encode.GetBytes(postData);
+
+            return Post(request, bytes);
+        }
+
         public string GetPage(Uri uri, string referer, int timeOut)
         {
             try
@@ -166,16 +174,49 @@ namespace MiniNet.Net
             }
         }
 
+        public string GetPage(HttpWebRequest request)
+        {
+            try
+            {
+                string content = null;
+
+                byte[] bytes = DownloadData(request);
+
+                if (bytes != null)
+                {
+                    if (isCharsetProbe && CharsetProbe.IsValidUtf8(bytes))
+                    {
+                        content = Encoding.UTF8.GetString(bytes);
+                    }
+                    else
+                    {
+                        content = encode.GetString(bytes);
+                    }
+                }
+
+                return content;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return null;
+            }
+        }
+
         public byte[] DownloadData(Uri uri, string referer, int timeOut)
         {
-            HttpWebRequest request = null;
+            var request = GetRequest(HttpMethod.GET, uri, referer, timeOut);
+
+            return DownloadData(request);
+        }
+
+        public byte[] DownloadData(HttpWebRequest request)
+        {
             HttpWebResponse response = null;
             byte[] bytes;
 
             try
             {
-                request = GetRequest(HttpMethod.GET, uri, referer, timeOut);
-
                 response = (HttpWebResponse)request.GetResponse();
 
                 responseHeads = response.Headers;
@@ -187,14 +228,11 @@ namespace MiniNet.Net
             catch (WebException ex)
             {
                 Console.WriteLine(ex.Message);
-                Console.WriteLine(uri);
                 return null;
             }
             catch (NotSupportedException ex2)
             {
                 Console.WriteLine(ex2.Message);
-                Console.WriteLine(uri);
-
                 return null;
             }
             finally
@@ -211,7 +249,7 @@ namespace MiniNet.Net
             }
         }
 
-        private HttpWebRequest GetRequest(HttpMethod method, Uri uri, string referer, int timeOut)
+        public HttpWebRequest GetRequest(HttpMethod method, Uri uri, string referer, int timeOut)
         {
             HttpWebRequest request = null;
 

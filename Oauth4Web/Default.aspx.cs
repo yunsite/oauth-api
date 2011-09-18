@@ -6,6 +6,9 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Oauth4Web.Model;
 using MiniNet.OAuthAPI;
+using System.IO;
+using MiniNet.OAuthAPI.Util;
+using System.Collections;
 
 namespace Oauth4Web
 {
@@ -34,13 +37,15 @@ namespace Oauth4Web
 
                     var verifier = Request["oauth_verifier"];
 
-                    OAuthAPI oauthAPI = Session["oauthAPI"] as OAuthAPI;
+                    IOAuthAPI oauthAPI = Session["oauthAPI"] as IOAuthAPI;
 
                     if (oauthAPI.GetAccessToken(verifier))
                     {
                         txtToken.Text = oauthAPI.Token;
                         txtTokenSecret.Text = oauthAPI.TokenSecret;
                         this.lblErrorMsg.Text = "授权成功";
+
+                        Session["oauthAPI"] = oauthAPI;
                     }
                 }
             }
@@ -65,7 +70,7 @@ namespace Oauth4Web
 
             Session["oauthAPIObj"] = oauthAPIEntity;
 
-            IOAuthAPI oauthAPI = new OAuthAPI();
+            IOAuthAPI oauthAPI = OAuthAPIFactory.CreateOAuthAPI();
             oauthAPI.RequestTokenUrl = oauthAPIEntity.RequestTokenUrl;
             oauthAPI.AuthorizeUrl = oauthAPIEntity.AuthorizeUrl;
             oauthAPI.AccessTokenUrl = oauthAPIEntity.AccessTokenUrl;
@@ -151,12 +156,21 @@ namespace Oauth4Web
             {
                 method = HttpMethod.POST;
             }
+
+            var content = "";
+
+            if (FileUpload1.HasFile)
+            {
+                var file = Request.Files[0];
+                var filename = file.FileName;
+                byte[] bytes = new byte[file.ContentLength];
+                file.InputStream.Read(bytes, 0, file.ContentLength);
+                content = oauthAPI.Call(txtApi.Text, txtApiParameter.Text, filename, bytes);
+            }
             else
             {
-                method = HttpMethod.Upload;
+                content = oauthAPI.Call(method, txtApi.Text, txtApiParameter.Text);
             }
-
-            var content = oauthAPI.Call(method, txtApi.Text, txtApiParameter.Text);
 
             txtContent.Text = content;
         }

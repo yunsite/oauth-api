@@ -1,4 +1,5 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" ValidateRequest="false" CodeBehind="Default.aspx.cs" Inherits="Oauth4Web.Default" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" ValidateRequest="false" CodeBehind="Default.aspx.cs"
+    Inherits="Oauth4Web.Default" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -101,6 +102,14 @@
                 </tr>
                 <tr>
                     <td>
+                        图片:
+                    </td>
+                    <td>
+                        <asp:FileUpload ID="FileUpload1" runat="server" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                         <asp:DropDownList ID="drpMethod" runat="server">
                             <asp:ListItem Value="0">GET</asp:ListItem>
                             <asp:ListItem Value="1">POST</asp:ListItem>
@@ -112,8 +121,8 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <asp:TextBox ID="txtContent" runat="server" TextMode="MultiLine" Width="493px" 
-                            Height="500px" EnableViewState="False"></asp:TextBox>
+                        <asp:TextBox ID="txtContent" runat="server" TextMode="MultiLine" Width="493px" Height="500px"
+                            EnableViewState="False"></asp:TextBox>
                     </td>
                 </tr>
             </table>
