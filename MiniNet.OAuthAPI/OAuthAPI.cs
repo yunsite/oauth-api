@@ -198,20 +198,30 @@ namespace MiniNet.OAuthAPI
 
         public string Call(HttpMethod method, string api, string parameter)
         {
-            if (!string.IsNullOrEmpty(parameter))
+            if (method == HttpMethod.GET)
             {
-                if (api.IndexOf("?") > 0)
+                if (!string.IsNullOrEmpty(parameter))
                 {
-                    api += "&";
+                    api += "?source=" + oauthBase.AppKey + "&" + parameter;
                 }
-                else
+            }
+            else if (method == HttpMethod.POST)
+            {
+                if (!string.IsNullOrEmpty(parameter))
                 {
-                    api += "?";
+                    if (api.IndexOf("?") > 0)
+                    {
+                        api += "&";
+                    }
+                    else
+                    {
+                        api += "?";
+                    }
+
+                    var postdata = ParsePostData(parameter);
+
+                    api += postdata;
                 }
-
-                var postdata = ParsePostData(parameter);
-
-                api += postdata;
             }
 
             var url = api;
