@@ -55,7 +55,7 @@ namespace NUnitTest.weibo.com
         public void TestUserTimeline()
         {
             //statuses/user_timeline
-            var result = oauthAPI.Call(HttpMethod.GET, "http://api.t.sina.com.cn/statuses/user_timeline/timyang.json", "");
+            var result = oauthAPI.Call(HttpMethod.GET, "http://api.t.sina.com.cn/statuses/user_timeline/timyang.json", "count=50&page=2");
             Assert.IsNotNull(JSON.JsonDecode(result));
         }
 
@@ -110,7 +110,7 @@ namespace NUnitTest.weibo.com
         public void TestComments()
         {
             //statuses/comments
-            var result = oauthAPI.Call(HttpMethod.GET, "http://api.t.sina.com.cn/statuses/comments.json", "id=3355667822313167&count=50&page=1");
+            var result = oauthAPI.Call(HttpMethod.GET, "http://api.t.sina.com.cn/statuses/comments.json", "id=3355406366424701&count=50&page=1");
             Assert.IsNotNull(JSON.JsonDecode(result));
         }
 

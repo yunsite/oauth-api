@@ -46,7 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="neteasy.com\TestTimelineAPI.cs" />
+    <Compile Include="neteasy.com\TestUserAPI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="qq.com\TestTimelineAPI.cs" />
+    <Compile Include="qq.com\TestUserAPI.cs" />
+    <Compile Include="sohu.com\TestTimelineAPI.cs" />
     <Compile Include="weibo.com\TestFriendshipsAPI.cs" />
     <Compile Include="weibo.com\TestMicroblogAccessAPI.cs" />
     <Compile Include="weibo.com\TestTimelineAPI.cs" />
@@ -58,11 +63,6 @@
       <Project>{19857163-5712-4E16-BA0B-CD2EBC72EB1D}</Project>
       <Name>MiniNet.OAuthAPI</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="t.163.com\" />
-    <Folder Include="t.qq.com\" />
-    <Folder Include="t.sohu.com\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
