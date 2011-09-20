@@ -46,6 +46,8 @@ namespace MiniNet.OAuthAPI
             {
                 get { return value; }
             }
+
+            public bool Encode { get; set; }
         }
 
         /// <summary>
@@ -245,21 +247,45 @@ namespace MiniNet.OAuthAPI
             return result.ToString();
         }
 
-        /// <summary>
-        /// Url编码参数
-        /// </summary>
-        /// <param name="parameters"></param>
-        /// <returns></returns>
-        protected List<QueryParameter> EncodeParameters(IList<QueryParameter> parameters)
+        public string UrlEncode2(string value, bool abHttpEncoded)
         {
-            List<QueryParameter> list = new List<QueryParameter>(parameters.Count);
+            StringBuilder result = new StringBuilder();
 
-            foreach (var p in parameters)
+            foreach (char symbol in value)
             {
-                list.Add(new QueryParameter(p.Name, UrlEncode(p.Value)));
+                if (unreservedChars.IndexOf(symbol) != -1)
+                {
+                    if (!abHttpEncoded)
+                    {
+                        result.Append(symbol);
+                    }
+                    else
+                    {
+                        result.Append(symbol);
+                    }
+                }
+                else
+                {
+                    if (!abHttpEncoded)
+                    {
+                        result.Append('%' + String.Format("{0:X2}", (int)symbol));
+                    }
+                    else
+                    {
+                        if (symbol == '%')
+                        {
+                            result.Append(symbol);
+                        }
+                        else
+                        {
+                            result.Append('%' + String.Format("{0:X2}", (int)symbol));
+                        }
+                    }
+
+                }
             }
 
-            return list;
+            return result.ToString();
         }
 
         /// <summary>
@@ -274,7 +300,15 @@ namespace MiniNet.OAuthAPI
             for (int i = 0; i < parameters.Count; i++)
             {
                 p = parameters[i];
-                sb.AppendFormat("{0}={1}", p.Name, p.Value);
+
+                if (p.Encode)
+                {
+                    sb.AppendFormat("{0}={1}", p.Name, UrlEncode2(p.Value, p.Encode));
+                }
+                else
+                {
+                    sb.AppendFormat("{0}={1}", p.Name, UrlEncode(p.Value));
+                }
 
                 if (i < parameters.Count - 1)
                 {
@@ -326,6 +360,10 @@ namespace MiniNet.OAuthAPI
             normalizedRequestParameters = null;
 
             List<QueryParameter> parameters = GetQueryParameters(url.Query);
+            foreach (QueryParameter parameter in parameters)
+            {
+                parameter.Encode = true;
+            }
 
             parameters.Add(new QueryParameter(OAuthVersionKey, OAuthVersion));
             parameters.Add(new QueryParameter(OAuthNonceKey, nonce));
@@ -360,7 +398,7 @@ namespace MiniNet.OAuthAPI
 
             //编码之后中文话题检索有问题。改成只对callback编码
             //腾讯的在组合参数前需要编码一次。
-            parameters = EncodeParameters(parameters);
+            //parameters = EncodeParameters(parameters);
 
             normalizedRequestParameters = NormalizeRequestParameters(parameters);
 
