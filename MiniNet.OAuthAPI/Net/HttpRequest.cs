@@ -12,36 +12,83 @@ namespace MiniNet.OAuthAPI.Net
     /// </summary>
     public class HttpRequest : IHttpRequest
     {
-        private NetClient netClient = null;
+        private IHttpForm http = null;
 
         public HttpRequest()
         {
-            netClient = new NetClient();
+            http = HttpFormFactory.DefaultHttpForm();
         }
 
         public string Get(string url)
         {
-            return netClient.GetPage(new Uri(url), "", 60000);
+            HttpFormGetRequest request = new HttpFormGetRequest();
+            request.Url = url;
+
+            request.Proxy = Proxy;
+            request.Encoding = Encode;
+
+            HttpFormResponse response= http.Get(request);
+
+            if (response == null)
+            {
+                return null;
+            }
+
+            return response.Response;
         }
 
         public string Post(string url, string postData)
         {
-            return netClient.Post(new Uri(url), postData, "", 60000);
+            HttpFormPostRawRequest request = new HttpFormPostRawRequest();
+
+            request.Url = url;
+            request.Data = postData;
+
+            request.Proxy = Proxy;
+            request.Encoding = Encode;
+
+            HttpFormResponse response = http.Post(request);
+
+            if (response == null)
+            {
+                return null;
+            }
+
+            return response.Response;
         }
 
-        public string Get(HttpWebRequest request)
+        public string Post(string url, string postData,WebHeaderCollection header)
         {
-            return netClient.GetPage(request);
+            HttpFormPostRawRequest request = new HttpFormPostRawRequest();
+
+            request.Url = url;
+            request.Data = postData;
+            request.Headers = header;
+
+            request.Proxy = Proxy;
+            request.Encoding = Encode;
+
+            HttpFormResponse response = http.Post(request);
+
+            if (response == null)
+            {
+                return null;
+            }
+
+            return response.Response;
         }
 
-        public string Post(HttpWebRequest request, string postData)
-        {
-            return netClient.Post(request, postData);
-        }
+        #region IHttpRequest Members
 
-        public string Post(HttpWebRequest request, byte[] bytes)
-        {
-            return netClient.Post(request, bytes);
-        }
+        public IWebProxy Proxy { get; set; }
+
+        #endregion
+
+        #region IHttpRequest Members
+
+
+        public Encoding Encode { get; set; }
+
+        #endregion
     }
 }
