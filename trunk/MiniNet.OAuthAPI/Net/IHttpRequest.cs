@@ -10,8 +10,8 @@ namespace MiniNet.OAuthAPI.Net
     {
         string Get(string url);
         string Post(string url, string postData);
-        string Get(HttpWebRequest request);
-        string Post(HttpWebRequest request, string postData);
-        string Post(HttpWebRequest request, byte[] bytes);
+        string Post(string url, string postData,WebHeaderCollection header);
+        IWebProxy Proxy { get; set; }
+        Encoding Encode { get; set; }
     }
 }

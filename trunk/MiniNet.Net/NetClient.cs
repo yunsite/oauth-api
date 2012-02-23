@@ -30,6 +30,7 @@ namespace MiniNet.Net
         private bool expect100Continue = true;
 
         private WebHeaderCollection responseHeads = null;
+
         #endregion
 
         #region 属性
@@ -81,6 +82,8 @@ namespace MiniNet.Net
                 encode = value;
             }
         }
+
+        public IWebProxy Proxy { get; set; }
         #endregion
 
         public string Post(Uri uri, string postData, string referer, int timeOut)
@@ -217,6 +220,11 @@ namespace MiniNet.Net
 
             try
             {
+                if (Proxy != null)
+                {
+                    request.Proxy = Proxy;
+                }
+
                 response = (HttpWebResponse)request.GetResponse();
 
                 responseHeads = response.Headers;

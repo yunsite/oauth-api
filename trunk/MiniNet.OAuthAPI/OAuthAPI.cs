@@ -5,6 +5,7 @@ using System.Text;
 using MiniNet.OAuthAPI.Net;
 using System.Web;
 using System.Globalization;
+using System.Net;
 
 namespace MiniNet.OAuthAPI
 {
@@ -109,6 +110,8 @@ namespace MiniNet.OAuthAPI
                 oauthBase.AppSecret = value;
             }
         }
+
+        public IWebProxy Proxy { get; set; }
         #endregion
 
         public bool GetRequestToken(string appKey, string appKeySecret, string callBackUrl)
@@ -250,7 +253,7 @@ namespace MiniNet.OAuthAPI
                 outUrl += "?" + querystring;
             }
 
-            var request = HttpRequestFactory.CreateHttpRequest();
+            var request = HttpRequestFactory.CreateHttpRequest(Proxy);
 
             var content = "";
 
@@ -288,9 +291,9 @@ namespace MiniNet.OAuthAPI
 
             var authorization = GetAuthorizationHead(url, "POST");
 
-            var httpWebRequest = HttpRequestFactory.GetDefaultHttpWebRequest(HttpMethod.POST, new Uri(api), "", 60000);
+            WebHeaderCollection header = new WebHeaderCollection();
 
-            httpWebRequest.Headers.Add("Authorization", authorization);
+            header.Add(HttpRequestHeader.Authorization, authorization);
 
             var boundary = "OAuthAPI";
 
@@ -313,14 +316,14 @@ namespace MiniNet.OAuthAPI
 
             var body = PackImage(boundary, filename, bytes, oauthBase.AppKey, status, latVal, longVal);
 
-            httpWebRequest.ContentType = string.Format("multipart/form-data; boundary={0}", boundary);
-            httpWebRequest.ContentLength = body.Length;
-            httpWebRequest.PreAuthenticate = true;
-            httpWebRequest.AllowWriteStreamBuffering = true;
+            string contentType = string.Format("multipart/form-data; boundary={0}", boundary);
 
-            var request = HttpRequestFactory.CreateHttpRequest();
+            header.Add(HttpRequestHeader.ContentType, contentType);
 
-            var content = request.Post(httpWebRequest, body);
+            var request = HttpRequestFactory.CreateHttpRequest(Proxy);
+            request.Encode = Encoding.GetEncoding(ContentEncoding);
+
+            var content = request.Post(api, body,header);
 
             return content;
         }
@@ -337,7 +340,7 @@ namespace MiniNet.OAuthAPI
         /// <param name="latVal"></param>
         /// <param name="longVal"></param>
         /// <returns></returns>
-        private byte[] PackImage(string boundary, string filename, byte[] bytes, string source, string status, float? latVal, float? longVal)
+        private string PackImage(string boundary, string filename, byte[] bytes, string source, string status, float? latVal, float? longVal)
         {
             string header = string.Format("--{0}", boundary);
             string footer = string.Format("--{0}--", boundary);
@@ -397,7 +400,7 @@ namespace MiniNet.OAuthAPI
 
             body.AppendLine(footer);
 
-            return Encoding.GetEncoding(ContentEncoding).GetBytes(body.ToString());
+            return body.ToString();
         }
 
         private string ParsePostData(string postData)

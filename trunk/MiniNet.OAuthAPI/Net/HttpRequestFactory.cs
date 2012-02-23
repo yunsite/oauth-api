@@ -13,6 +13,14 @@ namespace MiniNet.OAuthAPI.Net
             return new HttpRequest();
         }
 
+        public static IHttpRequest CreateHttpRequest(IWebProxy proxy)
+        {
+            HttpRequest request= new HttpRequest();
+            request.Proxy = proxy;
+
+            return request;
+        }
+
         public static HttpWebRequest GetDefaultHttpWebRequest(HttpMethod method, Uri uri, string referer, int timeOut)
         {
             HttpWebRequest request = null;

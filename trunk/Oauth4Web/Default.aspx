@@ -18,10 +18,12 @@
                 <tr>
                     <td>
                         <asp:DropDownList ID="drpSite" runat="server">
-                            <asp:ListItem Value="0">新浪微博</asp:ListItem>
+                            <asp:ListItem Value="5">新浪微博2.0</asp:ListItem>
+                            <asp:ListItem Value="0">新浪微博1.0</asp:ListItem>
                             <asp:ListItem Value="1">腾讯微博</asp:ListItem>
                             <asp:ListItem Value="2">网易微博</asp:ListItem>
                             <asp:ListItem Value="3">搜狐微博</asp:ListItem>
+                            <%--<asp:ListItem Value="4">开心网</asp:ListItem>--%>
                         </asp:DropDownList>
                     </td>
                     <td align="right">
@@ -42,6 +44,22 @@
                     </td>
                     <td>
                         <asp:TextBox ID="txtAppSecret" runat="server" Width="400px"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        微博帐号:
+                    </td>
+                    <td>
+                        <asp:TextBox ID="txtUserName" runat="server" Width="400px"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        微博密码:
+                    </td>
+                    <td>
+                        <asp:TextBox ID="txtPassword" runat="server" Width="400px"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
@@ -74,6 +92,11 @@
                     </td>
                     <td>
                         <asp:TextBox ID="txtTokenSecret" runat="server" Width="400px"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="right">
+                        <asp:Button ID="btnSave" runat="server" Text="保存" onclick="btnSave_Click" />
                     </td>
                 </tr>
                 <tr>
